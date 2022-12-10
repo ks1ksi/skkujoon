@@ -26,4 +26,10 @@ public class ProblemRepository {
         return entityManager.createQuery("select p from Problem p", Problem.class).getResultList();
     }
 
+    public Optional<Problem> findByProblemNumber(Long problemNumber) {
+        List<Problem> resultList = entityManager.createQuery("select p from Problem p where p.problemNumber = :problemNumber", Problem.class)
+                .setParameter("problemNumber", problemNumber).getResultList();
+        return resultList.stream().findAny();
+    }
+
 }
