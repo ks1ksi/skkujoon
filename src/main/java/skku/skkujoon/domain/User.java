@@ -16,6 +16,7 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+    @Column(unique = true)
     private String handle;
 
     private String bio;
