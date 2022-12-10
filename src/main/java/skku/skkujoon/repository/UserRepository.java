@@ -26,4 +26,10 @@ public class UserRepository {
         return entityManager.createQuery("select u from User u", User.class).getResultList();
     }
 
+    public Optional<User> findByHandle(String handle) {
+        List<User> resultList = entityManager.createQuery("select u from User u where u.handle = :handle", User.class)
+                .setParameter("handle", handle).getResultList();
+        return resultList.stream().findAny();
+    }
+
 }
