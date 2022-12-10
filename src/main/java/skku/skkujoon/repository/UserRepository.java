@@ -6,6 +6,7 @@ import skku.skkujoon.domain.User;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -17,8 +18,8 @@ public class UserRepository {
         entityManager.persist(user);
     }
 
-    public User findById(Long id) {
-        return entityManager.find(User.class, id);
+    public Optional<User> findById(Long id) {
+        return Optional.ofNullable(entityManager.find(User.class, id));
     }
 
     public List<User> findAll() {

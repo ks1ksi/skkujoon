@@ -6,6 +6,7 @@ import skku.skkujoon.domain.Problem;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -17,8 +18,8 @@ public class ProblemRepository {
         entityManager.persist(problem);
     }
 
-    public Problem findById(Long id) {
-        return entityManager.find(Problem.class, id);
+    public Optional<Problem> findById(Long id) {
+        return Optional.ofNullable(entityManager.find(Problem.class, id));
     }
 
     public List<Problem> findAll() {
