@@ -48,6 +48,7 @@ public class UserService {
 
         user.addUserProblem(userProblem);
         problem.addUserProblem(userProblem);
+        problem.solve();
     }
 
 }

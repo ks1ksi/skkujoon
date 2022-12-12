@@ -26,6 +26,8 @@ public class Problem {
 
     private int level;
 
+    private int solvedBySkku;
+
     private boolean isSolvable;
 
     private boolean isPartial;
@@ -36,6 +38,10 @@ public class Problem {
     public void addUserProblem(UserProblem userProblem) {
         this.userProblems.add(userProblem);
         userProblem.setProblem(this);
+    }
+
+    public void solve() {
+        this.solvedBySkku++;
     }
 
 }

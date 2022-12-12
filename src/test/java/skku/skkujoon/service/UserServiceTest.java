@@ -59,6 +59,7 @@ class UserServiceTest {
 
             assertEquals(1, user.getUserProblems().size());
             assertEquals(1, problem.getUserProblems().size());
+            assertEquals(1, problem.getSolvedBySkku());
             assertSame(problem, user.getUserProblems().get(0).getProblem());
         }
     }
