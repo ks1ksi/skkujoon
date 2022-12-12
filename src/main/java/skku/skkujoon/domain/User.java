@@ -1,6 +1,7 @@
 package skku.skkujoon.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 public class User {
 
     @Id
@@ -21,11 +23,22 @@ public class User {
 
     private String bio;
 
+    private int solvedCount;
+
     private int tier;
 
     private int rating;
 
-    @OneToMany(mappedBy = "user")
+    private int rank;
+
+    private int globalRank;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserProblem> userProblems = new ArrayList<>();
+
+    public void addUserProblem(UserProblem userProblem) {
+        this.userProblems.add(userProblem);
+        userProblem.setUser(this);
+    }
 
 }

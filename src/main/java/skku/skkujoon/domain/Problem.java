@@ -1,6 +1,7 @@
 package skku.skkujoon.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 public class Problem {
 
     @Id
@@ -26,7 +28,12 @@ public class Problem {
 
     private boolean isPartial;
 
-    @OneToMany(mappedBy = "problem")
+    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
     private List<UserProblem> userProblems = new ArrayList<>();
+
+    public void addUserProblem(UserProblem userProblem) {
+        this.userProblems.add(userProblem);
+        userProblem.setProblem(this);
+    }
 
 }
