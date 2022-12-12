@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import skku.skkujoon.domain.Problem;
 import skku.skkujoon.domain.User;
 import skku.skkujoon.service.ProblemService;
 import skku.skkujoon.service.UserService;
@@ -50,9 +51,42 @@ public class DataLoader {
             );
             userList.addAll(response.getBody().getItems());
         }
-        System.out.println("totalUser: " + totalUser);
-        System.out.println("userList.size(): " + userList.size());
+        System.out.println("totalUser = " + totalUser);
+        System.out.println("userList.size() = " + userList.size());
+
         return userList;
+    }
+
+    public List<Problem> getProblemList(String handle) {
+        List<Problem> problemList = new ArrayList<>();
+
+        ResponseEntity<ResponseData<Problem>> responseEntity = restTemplate.exchange(
+                BASE_URL + "search/problem?query=solved_by:" + handle,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<ResponseData<Problem>>() {
+                }
+        );
+
+        ResponseData<Problem> body = responseEntity.getBody();
+        int totalProblem = body.getCount();
+        problemList.addAll(body.getItems());
+
+        for (int i = 1; i < Math.ceil(totalProblem / PAGE_SIZE); i++) {
+            ResponseEntity<ResponseData<Problem>> response = restTemplate.exchange(
+                    BASE_URL + "search/problem?query=solved_by:" + handle + "&page=" + (i + 1),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<ResponseData<Problem>>() {
+                    }
+            );
+            problemList.addAll(response.getBody().getItems());
+        }
+
+        System.out.println("totalProblem = " + totalProblem);
+        System.out.println("problemList.size() = " + problemList.size());
+
+        return problemList;
     }
 
     @Getter

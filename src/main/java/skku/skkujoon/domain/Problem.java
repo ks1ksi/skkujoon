@@ -1,5 +1,6 @@
 package skku.skkujoon.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ public class Problem {
     private Long id;
 
     @Column(unique = true)
+    @JsonProperty("problemId")
     private Long problemNumber;
 
     private String titleKo;
