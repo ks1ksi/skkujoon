@@ -1,12 +1,12 @@
 package skku.skkujoon.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -29,7 +29,8 @@ public class User {
 
     private int rating;
 
-    private int rank;
+    @JsonProperty("rank")
+    private int ranking;
 
     private int globalRank;
 
