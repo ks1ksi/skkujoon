@@ -10,6 +10,7 @@ import skku.skkujoon.repository.ProblemRepository;
 import skku.skkujoon.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,12 +29,12 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User findUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
+    public Optional<User> findUserById(Long userId) {
+        return userRepository.findById(userId);
     }
 
-    public User findUserByHandle(String handle) {
-        return userRepository.findByHandle(handle).orElseThrow(IllegalAccessError::new);
+    public Optional<User> findUserByHandle(String handle) {
+        return userRepository.findByHandle(handle);
     }
 
     public List<User> findUsers() {

@@ -7,6 +7,7 @@ import skku.skkujoon.domain.Problem;
 import skku.skkujoon.repository.ProblemRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,12 +25,12 @@ public class ProblemService {
         problemRepository.save(problem);
     }
 
-    public Problem findProblemById(Long problemId) {
-        return problemRepository.findById(problemId).orElseThrow(IllegalArgumentException::new);
+    public Optional<Problem> findProblemById(Long problemId) {
+        return problemRepository.findById(problemId);
     }
 
-    public Problem findProblemByProblemNumber(Long problemNumber) {
-        return problemRepository.findByProblemNumber(problemNumber).orElseThrow(IllegalArgumentException::new);
+    public Optional<Problem> findProblemByProblemNumber(Long problemNumber) {
+        return problemRepository.findByProblemNumber(problemNumber);
     }
 
     public List<Problem> findProblems() {
