@@ -3,6 +3,7 @@ package skku.skkujoon.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import skku.skkujoon.domain.dto.UpdateUserDto;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -40,6 +41,15 @@ public class User {
     public void addUserProblem(UserProblem userProblem) {
         this.userProblems.add(userProblem);
         userProblem.setUser(this);
+    }
+
+    public void updateUser(UpdateUserDto dto) {
+        this.bio = dto.getBio();
+        this.solvedCount = dto.getSolvedCount();
+        this.tier = dto.getTier();
+        this.rating = dto.getRating();
+        this.ranking = dto.getRanking();
+        this.globalRank = dto.getGlobalRank();
     }
 
 }

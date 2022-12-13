@@ -3,6 +3,7 @@ package skku.skkujoon.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import skku.skkujoon.domain.dto.UpdateProblemDto;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -42,6 +43,13 @@ public class Problem {
 
     public void solve() {
         this.solvedBySkku++;
+    }
+
+    public void updateProblem(UpdateProblemDto dto) {
+        this.titleKo = dto.getTitleKo();
+        this.level = dto.getLevel();
+        this.isSolvable = dto.isSolvable();
+        this.isPartial = dto.isPartial();
     }
 
 }
