@@ -54,8 +54,8 @@ class UserServiceTest {
             Long problemId = problems.get(i).getId();
             userService.solveProblem(userId, problemId);
 
-            User user = userService.findUserById(userId).get();
-            Problem problem = problemService.findProblemById(problemId).get();
+            User user = userService.findById(userId).get();
+            Problem problem = problemService.findById(problemId).get();
 
             assertEquals(1, user.getUserProblems().size());
             assertEquals(1, problem.getUserProblems().size());
