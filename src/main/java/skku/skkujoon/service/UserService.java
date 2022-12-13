@@ -29,11 +29,11 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Optional<User> findUserById(Long userId) {
+    public Optional<User> findById(Long userId) {
         return userRepository.findById(userId);
     }
 
-    public Optional<User> findUserByHandle(String handle) {
+    public Optional<User> findByHandle(String handle) {
         return userRepository.findByHandle(handle);
     }
 

@@ -25,11 +25,11 @@ public class ProblemService {
         problemRepository.save(problem);
     }
 
-    public Optional<Problem> findProblemById(Long problemId) {
+    public Optional<Problem> findById(Long problemId) {
         return problemRepository.findById(problemId);
     }
 
-    public Optional<Problem> findProblemByProblemNumber(Long problemNumber) {
+    public Optional<Problem> findByProblemNumber(Long problemNumber) {
         return problemRepository.findByProblemNumber(problemNumber);
     }
 
