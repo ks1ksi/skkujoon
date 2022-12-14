@@ -47,9 +47,11 @@ public class Scheduler {
         List<User> userList = dataLoader.getUserList();
 
         for (User u : userList) {
+            User user;
             Optional<User> optionalUser = userService.findByHandle(u.getHandle());
+
             if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
+                user = optionalUser.get();
                 UpdateUserDto dto = new UpdateUserDto(
                         u.getBio(),
                         u.getSolvedCount(),
@@ -60,14 +62,17 @@ public class Scheduler {
                 user.updateUser(dto);
             } else {
                 userService.addUser(u);
+                user = u;
             }
-        }
 
-        for (User u : userList) {
-            List<Problem> userProblemList = dataLoader.getUserProblemList(u.getHandle());
+            List<Problem> userProblemList = dataLoader.getUserProblemList(user.getHandle());
             for (Problem p : userProblemList) {
-                userService.solveProblem(u.getId(), p.getId());
+                Optional<Problem> optionalProblem = problemService.findByProblemNumber(p.getProblemNumber());
+                if (optionalProblem.isEmpty()) continue;
+                Problem problem = optionalProblem.get();
+                userService.solveProblem(user.getId(), problem.getId());
             }
+
         }
     }
 
