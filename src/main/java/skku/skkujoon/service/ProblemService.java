@@ -37,4 +37,8 @@ public class ProblemService {
         return problemRepository.findAll();
     }
 
+    public List<Problem> findUnsolvedProblems() {
+        return problemRepository.findUnsolvedProblems();
+    }
+
 }

@@ -32,4 +32,8 @@ public class ProblemRepository {
         return resultList.stream().findAny();
     }
 
+    public List<Problem> findUnsolvedProblems() {
+        return entityManager.createQuery("select p from Problem p where p.solvedBySkku = 0", Problem.class).getResultList();
+    }
+
 }
