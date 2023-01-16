@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="css">
+    <!--    <link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
+</th:block>
+<th:block layout:fragment="script">
+    <!--    <script th:src="@{/js/page/home.js}"></script>-->
+</th:block>
+
+<!-- Content -->
+<div layout:fragment="content">
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-sm h1">
+                <p><strong>성균관대학교</strong>는</p>
+                <p><strong>999명</strong>의 구성원이</p>
+                <p><strong>12345개</strong>의 문제를 풀었습니다</p>
+            </div>
+            <div class="col-sm">
+                <ul class="list-group">
+                    <li class="list-group-item">1</li>
+                    <li class="list-group-item">1</li>
+                    <li class="list-group-item">1</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
