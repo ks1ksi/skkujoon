@@ -22,16 +22,17 @@
             </div>
             <div class="col-sm">
                 <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action list-group-item-success" aria-current="true">
+                    <a href="/problems" class="list-group-item list-group-item-action list-group-item-success" aria-current="true">
                         추천 문제
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action">A second link item</a>
-                    <a href="#" class="list-group-item list-group-item-action">A third link item</a>
-                    <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
+                    <div th:each="problem : ${randomProblems}">
+                        <a href="/" class="list-group-item list-group-item-action"
+                           th:text="|${problem.problemNumber}번 ${problem.titleKo} (${problem.level})|"></a>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row mt-5">
             <div class="col-sm h3">
                 <p>백준에 학교 정보를 등록해주세요</p>
                 <a href="https://www.acmicpc.net/setting/school">학교 등록</a>

@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import skku.skkujoon.domain.Problem;
 import skku.skkujoon.service.ProblemService;
 import skku.skkujoon.service.UserService;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,8 +20,10 @@ public class HomeController {
     public String home(Model model) {
         Long solvedCount = problemService.countSolvedProblems();
         Long userCount = userService.countUser();
+        List<Problem> randomUnsolvedProblems = problemService.findRandomUnsolvedProblems(5);
         model.addAttribute("solvedCount", solvedCount);
         model.addAttribute("userCount", userCount);
+        model.addAttribute("randomProblems", randomUnsolvedProblems);
         return "home";
     }
 }
