@@ -41,6 +41,10 @@ public class ProblemService {
         return problemRepository.findUnsolvedProblems();
     }
 
+    public List<Problem> findRandomUnsolvedProblems(int limit) {
+        return problemRepository.findRandomUnsolvedProblems(limit);
+    }
+
     public Long countProblems() {
         return problemRepository.countProblems();
     }

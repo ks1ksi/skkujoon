@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 import skku.skkujoon.domain.Problem;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +37,17 @@ public class ProblemRepository {
 
     public List<Problem> findUnsolvedProblems() {
         return entityManager.createQuery("select p from Problem p where p.solvedBySkku = 0", Problem.class).getResultList();
+    }
+
+    public List<Problem> findRandomUnsolvedProblems(int limit) {
+        String sql = "select p.problem_id, p.level, p.problem_number, p.solved_by_skku, p.title_ko, p.partial, p.solvable from problem p where solved_by_skku = 0 order by rand() limit ?";
+        Query nativeQuery = entityManager.createNativeQuery(sql, Problem.class).setParameter(1, limit);
+        List<Problem> resultList = new ArrayList<>();
+        for (Object o : nativeQuery.getResultList()) {
+            Problem p = (Problem) o;
+            resultList.add(p);
+        }
+        return resultList;
     }
 
     public Long countProblems() {

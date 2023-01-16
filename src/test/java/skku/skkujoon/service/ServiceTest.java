@@ -76,4 +76,16 @@ class ServiceTest {
         System.out.println("userCount = " + userCount);
         assertEquals(problemCount, solvedProblemCount + unsolvedProblemCount);
     }
+
+    @Test
+    void randomProblemTest() {
+        List<Problem> ramdomProblemList = problemService.findRandomUnsolvedProblems(5);
+        for (Problem problem : ramdomProblemList) {
+            System.out.println(problem.getProblemNumber() + " " + problem.getTitleKo());
+        }
+        assertEquals(5, ramdomProblemList.size());
+        for (Problem problem : ramdomProblemList) {
+            assertEquals(0, problem.getSolvedBySkku());
+        }
+    }
 }
