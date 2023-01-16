@@ -26,7 +26,7 @@
                         추천 문제
                     </a>
                     <div th:each="problem : ${randomProblems}">
-                        <a href="/" class="list-group-item list-group-item-action"
+                        <a th:href="@{https://www.acmicpc.net/problem/{number}(number=${problem.problemNumber})}" target="_blank" class="list-group-item list-group-item-action"
                            th:text="|${problem.problemNumber}번 ${problem.titleKo} (${problem.level})|"></a>
                     </div>
                 </div>
