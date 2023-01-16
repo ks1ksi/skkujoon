@@ -36,4 +36,16 @@ public class ProblemRepository {
         return entityManager.createQuery("select p from Problem p where p.solvedBySkku = 0", Problem.class).getResultList();
     }
 
+    public Long countProblems() {
+        return entityManager.createQuery("select count(*) from Problem p", Long.class).getSingleResult();
+    }
+
+    public Long countSolvedProblems() {
+        return entityManager.createQuery("select count(*) from Problem p where p.solvedBySkku >= 1", Long.class).getSingleResult();
+    }
+
+    public Long countUnsolvedProblems() {
+        return entityManager.createQuery("select count(*) from Problem p where p.solvedBySkku = 0", Long.class).getSingleResult();
+    }
+
 }

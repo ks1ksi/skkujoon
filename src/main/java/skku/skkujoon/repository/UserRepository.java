@@ -32,4 +32,8 @@ public class UserRepository {
         return resultList.stream().findAny();
     }
 
+    public Long countUser() {
+        return entityManager.createQuery("select count(*) from User u", Long.class).getSingleResult();
+    }
+
 }

@@ -16,16 +16,28 @@
     <div class="container mt-5 mb-5">
         <div class="row">
             <div class="col-sm h1">
-                <p><strong>성균관대학교</strong>는</p>
-                <p><strong>999명</strong>의 구성원이</p>
-                <p><strong>12345개</strong>의 문제를 풀었습니다</p>
+                <p><strong class="text-success-emphasis">성균관대학교</strong>는</p>
+                <p><strong class="text-success-emphasis" th:text="|${userCount}명|"></strong>의 구성원이</p>
+                <p><strong class="text-success-emphasis" th:text="|${solvedCount}개|"></strong>의 문제를 풀었습니다</p>
             </div>
             <div class="col-sm">
-                <ul class="list-group">
-                    <li class="list-group-item">1</li>
-                    <li class="list-group-item">1</li>
-                    <li class="list-group-item">1</li>
-                </ul>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action list-group-item-success" aria-current="true">
+                        추천 문제
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">A second link item</a>
+                    <a href="#" class="list-group-item list-group-item-action">A third link item</a>
+                    <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm h3">
+                <p>백준에 학교 정보를 등록해주세요</p>
+                <a href="https://www.acmicpc.net/setting/school">학교 등록</a>
+            </div>
+            <div class="col-sm h3">
+                <p>유저 갱신은 최대 24시간이 걸릴 수 있습니다</p>
             </div>
         </div>
     </div>

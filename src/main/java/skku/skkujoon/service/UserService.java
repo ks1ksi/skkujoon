@@ -52,4 +52,8 @@ public class UserService {
         problem.solve();
     }
 
+    public Long countUser() {
+        return userRepository.countUser();
+    }
+
 }

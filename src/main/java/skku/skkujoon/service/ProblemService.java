@@ -41,4 +41,16 @@ public class ProblemService {
         return problemRepository.findUnsolvedProblems();
     }
 
+    public Long countProblems() {
+        return problemRepository.countProblems();
+    }
+
+    public Long countUnsolvedProblems() {
+        return problemRepository.countUnsolvedProblems();
+    }
+
+    public Long countSolvedProblems() {
+        return problemRepository.countSolvedProblems();
+    }
+
 }

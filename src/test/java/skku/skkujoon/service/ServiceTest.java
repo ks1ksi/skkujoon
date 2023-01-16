@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class UserServiceTest {
+class ServiceTest {
 
     @Autowired UserService userService;
     @Autowired ProblemService problemService;
@@ -62,5 +62,18 @@ class UserServiceTest {
             assertEquals(1, problem.getSolvedBySkku());
             assertSame(problem, user.getUserProblems().get(0).getProblem());
         }
+    }
+
+    @Test
+    void countTest() {
+        Long problemCount = problemService.countProblems();
+        Long solvedProblemCount = problemService.countSolvedProblems();
+        Long unsolvedProblemCount = problemService.countUnsolvedProblems();
+        Long userCount = userService.countUser();
+        System.out.println("problemCount = " + problemCount);
+        System.out.println("solvedProblemCount = " + solvedProblemCount);
+        System.out.println("unsolvedProblemCount = " + unsolvedProblemCount);
+        System.out.println("userCount = " + userCount);
+        assertEquals(problemCount, solvedProblemCount + unsolvedProblemCount);
     }
 }
