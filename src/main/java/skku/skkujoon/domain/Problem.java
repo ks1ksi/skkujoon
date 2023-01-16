@@ -29,9 +29,9 @@ public class Problem {
 
     private int solvedBySkku;
 
-    private boolean isSolvable;
+    private boolean solvable;
 
-    private boolean isPartial;
+    private boolean partial;
 
     @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
     private List<UserProblem> userProblems = new ArrayList<>();
@@ -48,8 +48,8 @@ public class Problem {
     public void updateProblem(UpdateProblemDto dto) {
         this.titleKo = dto.getTitleKo();
         this.level = dto.getLevel();
-        this.isSolvable = dto.isSolvable();
-        this.isPartial = dto.isPartial();
+        this.solvable = dto.isSolvable();
+        this.partial = dto.isPartial();
     }
 
 }
