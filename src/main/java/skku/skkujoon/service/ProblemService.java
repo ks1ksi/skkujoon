@@ -38,11 +38,11 @@ public class ProblemService {
     }
 
     public List<Problem> findUnsolvedProblems() {
-        return problemRepository.findUnsolvedProblems();
+        return problemRepository.findSkkuUnsolvedProblems();
     }
 
     public List<Problem> findRandomUnsolvedProblems(int limit) {
-        return problemRepository.findRandomUnsolvedProblems(limit);
+        return problemRepository.findRandomSkkuUnsolvedProblems(limit);
     }
 
     public Long countProblems() {
@@ -50,11 +50,11 @@ public class ProblemService {
     }
 
     public Long countUnsolvedProblems() {
-        return problemRepository.countUnsolvedProblems();
+        return problemRepository.countSkkuUnsolvedProblems();
     }
 
     public Long countSolvedProblems() {
-        return problemRepository.countSolvedProblems();
+        return problemRepository.countSkkuSolvedProblems();
     }
 
 }
