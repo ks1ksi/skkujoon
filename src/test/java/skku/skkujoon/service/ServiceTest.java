@@ -97,4 +97,13 @@ class ServiceTest {
             System.out.println(p.getProblemNumber() + " " + p.getTitleKo());
         }
     }
+
+    @Test
+    void problemSolvedUserTest() {
+        Problem problem = problemService.findByProblemNumber(25904L).get();
+        List<User> problemSolvedUsers = userService.findProblemSolvedUser(problem.getId());
+        for (User u : problemSolvedUsers) {
+            System.out.println(u.getHandle() + " " + u.getRating());
+        }
+    }
 }

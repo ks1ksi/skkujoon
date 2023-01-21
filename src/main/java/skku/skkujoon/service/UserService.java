@@ -41,6 +41,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public List<User> findProblemSolvedUser(Long problemId) {
+        return userRepository.findProblemSolvedUser(problemId);
+    }
+
     @Transactional
     public void solveProblem(Long userId, Long problemId) {
         UserProblem userProblem = new UserProblem();
