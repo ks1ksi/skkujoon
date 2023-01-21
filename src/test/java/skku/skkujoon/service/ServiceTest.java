@@ -88,4 +88,13 @@ class ServiceTest {
             assertEquals(0, problem.getSolvedBySkku());
         }
     }
+
+    @Test
+     void userSolvedProblemTest() {
+        User user = userService.findByHandle("ksi990302").get();
+        List<Problem> userSolvedProblems = problemService.findUserSolvedProblems(user.getId());
+        for (Problem p : userSolvedProblems) {
+            System.out.println(p.getProblemNumber() + " " + p.getTitleKo());
+        }
+    }
 }

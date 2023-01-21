@@ -49,6 +49,12 @@ public class ProblemRepository {
         return resultList;
     }
 
+    public List<Problem> findUserSolvedProblems(Long userId) {
+        return entityManager.createQuery("select p from Problem p join p.userProblems up where up.user.id = :userId", Problem.class)
+                .setParameter("userId", userId)
+                .getResultList();
+    }
+
     public Long countProblems() {
         return entityManager.createQuery("select count(*) from Problem p", Long.class).getSingleResult();
     }

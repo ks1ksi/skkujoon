@@ -45,6 +45,10 @@ public class ProblemService {
         return problemRepository.findRandomSkkuUnsolvedProblems(limit);
     }
 
+    public List<Problem> findUserSolvedProblems(Long userId) {
+        return problemRepository.findUserSolvedProblems(userId);
+    }
+
     public Long countProblems() {
         return problemRepository.countProblems();
     }
