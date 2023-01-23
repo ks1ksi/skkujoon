@@ -28,8 +28,8 @@ public class UserRepository {
     }
 
     public List<User> findAll(int page, int limit) {
-        return entityManager.createQuery("select u from User u", User.class)
-                .setFirstResult(page - 1)
+        return entityManager.createQuery("select u from User u order by u.ranking asc", User.class)
+                .setFirstResult(page*limit)
                 .setMaxResults(limit)
                 .getResultList();
     }
