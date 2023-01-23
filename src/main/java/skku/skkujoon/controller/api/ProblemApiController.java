@@ -25,8 +25,8 @@ public class ProblemApiController {
     }
 
     @GetMapping("/api/v1/problems/unsolved/random")
-    public List<ProblemDto> randomUnsolvedProblems(@RequestParam int limit) {
-        List<Problem> randomUnsolvedProblems = problemService.findRandomUnsolvedProblems(limit);
+    public List<ProblemDto> randomUnsolvedProblems(@RequestParam int min, @RequestParam int max, @RequestParam int limit) {
+        List<Problem> randomUnsolvedProblems = problemService.findRandomUnsolvedProblems(min, max, limit);
         return randomUnsolvedProblems.stream().map(
                 p -> new ProblemDto(p.getProblemNumber(), p.getTitleKo(), p.getLevel(), p.getSolvedBySkku())
         ).collect(Collectors.toList());

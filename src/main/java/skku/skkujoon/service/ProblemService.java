@@ -41,8 +41,8 @@ public class ProblemService {
         return problemRepository.findSkkuUnsolvedProblems();
     }
 
-    public List<Problem> findRandomUnsolvedProblems(int limit) {
-        return problemRepository.findRandomSkkuUnsolvedProblems(limit);
+    public List<Problem> findRandomUnsolvedProblems(int min, int max, int limit) {
+        return problemRepository.findRandomSkkuUnsolvedProblems(min, max, limit);
     }
 
     public List<Problem> findUserSolvedProblems(Long userId) {

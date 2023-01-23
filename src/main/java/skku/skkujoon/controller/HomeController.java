@@ -20,7 +20,7 @@ public class HomeController {
     public String home(Model model) {
         Long solvedCount = problemService.countSolvedProblems();
         Long userCount = userService.countUser();
-        List<Problem> randomUnsolvedProblems = problemService.findRandomUnsolvedProblems(5);
+        List<Problem> randomUnsolvedProblems = problemService.findRandomUnsolvedProblems(6, 25, 7);
         model.addAttribute("solvedCount", solvedCount);
         model.addAttribute("userCount", userCount);
         model.addAttribute("randomProblems", randomUnsolvedProblems);

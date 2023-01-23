@@ -79,11 +79,11 @@ class ServiceTest {
 
     @Test
     void randomProblemTest() {
-        List<Problem> ramdomProblemList = problemService.findRandomUnsolvedProblems(5);
+        List<Problem> ramdomProblemList = problemService.findRandomUnsolvedProblems(6, 25, 7);
         for (Problem problem : ramdomProblemList) {
             System.out.println(problem.getProblemNumber() + " " + problem.getTitleKo());
         }
-        assertEquals(5, ramdomProblemList.size());
+        assertEquals(7, ramdomProblemList.size());
         for (Problem problem : ramdomProblemList) {
             assertEquals(0, problem.getSolvedBySkku());
         }

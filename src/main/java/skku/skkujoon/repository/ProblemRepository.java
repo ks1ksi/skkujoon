@@ -38,15 +38,12 @@ public class ProblemRepository {
         return entityManager.createQuery("select p from Problem p where p.solvedBySkku = 0", Problem.class).getResultList();
     }
 
-    public List<Problem> findRandomSkkuUnsolvedProblems(int limit) {
-        String sql = "select p.problem_id, p.level, p.problem_number, p.solved_by_skku, p.title_ko, p.partial, p.solvable from problem p where solved_by_skku = 0 order by rand() limit ?";
-        Query nativeQuery = entityManager.createNativeQuery(sql, Problem.class).setParameter(1, limit);
-        List<Problem> resultList = new ArrayList<>();
-        for (Object o : nativeQuery.getResultList()) {
-            Problem p = (Problem) o;
-            resultList.add(p);
-        }
-        return resultList;
+    public List<Problem> findRandomSkkuUnsolvedProblems(int min, int max, int limit) {
+        String sql = "select p.problem_id, p.level, p.problem_number, p.solved_by_skku, p.title_ko, p.partial, p.solvable from problem p where p.solved_by_skku = 0 and p.level between :min and :max order by rand() limit :limit";
+        return (List<Problem>) entityManager.createNativeQuery(sql, Problem.class)
+                .setParameter("min", min)
+                .setParameter("max", max)
+                .setParameter("limit", limit).getResultList();
     }
 
     public List<Problem> findUserSolvedProblems(Long userId) {
