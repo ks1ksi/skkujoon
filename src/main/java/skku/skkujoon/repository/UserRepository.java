@@ -23,7 +23,15 @@ public class UserRepository {
     }
 
     public List<User> findAll() {
-        return entityManager.createQuery("select u from User u", User.class).getResultList();
+        return entityManager.createQuery("select u from User u", User.class)
+                .getResultList();
+    }
+
+    public List<User> findAll(int page, int limit) {
+        return entityManager.createQuery("select u from User u", User.class)
+                .setFirstResult(page - 1)
+                .setMaxResults(limit)
+                .getResultList();
     }
 
     public Optional<User> findByHandle(String handle) {

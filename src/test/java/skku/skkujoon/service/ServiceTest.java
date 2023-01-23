@@ -43,7 +43,7 @@ class ServiceTest {
             problemService.addProblem(problem);
         }
 
-        List<User> users = userService.findUsers();
+        List<User> users = userService.findAll();
         List<Problem> problems = problemService.findProblems();
 
         assertEquals(100, users.size());

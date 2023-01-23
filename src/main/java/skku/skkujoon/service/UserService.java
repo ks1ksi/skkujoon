@@ -37,8 +37,12 @@ public class UserService {
         return userRepository.findByHandle(handle);
     }
 
-    public List<User> findUsers() {
+    public List <User> findAll() {
         return userRepository.findAll();
+    }
+
+    public List<User> findUsers(int page, int limit) {
+        return userRepository.findAll(page, limit);
     }
 
     public List<User> findProblemSolvedUser(Long problemId) {
