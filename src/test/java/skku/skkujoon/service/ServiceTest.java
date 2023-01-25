@@ -106,4 +106,11 @@ class ServiceTest {
             System.out.println(u.getHandle() + " " + u.getRating());
         }
     }
+
+    @Test
+    void alreadySolvedProblemTest() {
+        Problem problem = problemService.findByProblemNumber(25904L).get();
+        User user = userService.findByHandle("ksi990302").get();
+        userService.solveProblem(user.getId(), problem.getId());
+    }
 }

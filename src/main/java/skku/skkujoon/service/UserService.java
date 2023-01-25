@@ -1,6 +1,7 @@
 package skku.skkujoon.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import skku.skkujoon.domain.Problem;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -37,7 +39,7 @@ public class UserService {
         return userRepository.findByHandle(handle);
     }
 
-    public List <User> findAll() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
@@ -51,6 +53,11 @@ public class UserService {
 
     @Transactional
     public void solveProblem(Long userId, Long problemId) {
+        if (userRepository.existsUserProblem(userId, problemId)) {
+            log.info("{}는 {}를 이미 풀었습니다.", userId, problemId);
+            return;
+        }
+
         UserProblem userProblem = new UserProblem();
         User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
         Problem problem = problemRepository.findById(problemId).orElseThrow(IllegalArgumentException::new);

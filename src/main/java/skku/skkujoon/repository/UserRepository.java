@@ -46,6 +46,13 @@ public class UserRepository {
                 .getResultList();
     }
 
+    public boolean existsUserProblem(Long userId, Long problemId) {
+        return entityManager.createQuery("select up from UserProblem up where up.user.id = :userId and up.problem.id = :problemId")
+                .setParameter("userId", userId)
+                .setParameter("problemId", problemId)
+                .getResultList().stream().findFirst().isPresent();
+    }
+
     public Long countUser() {
         return entityManager.createQuery("select count(*) from User u", Long.class).getSingleResult();
     }

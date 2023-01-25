@@ -5,8 +5,6 @@ import org.springframework.stereotype.Repository;
 import skku.skkujoon.domain.Problem;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
