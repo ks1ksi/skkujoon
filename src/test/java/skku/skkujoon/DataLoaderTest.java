@@ -40,4 +40,12 @@ class DataLoaderTest {
         }
     }
 
+    @Test
+    void userSolvedProblemNumbersTest() {
+        List<Long> problemNumbers = dataLoader.getUserSolvedProblemNumbers("ksi990302");
+        for (Long problemNumber : problemNumbers) {
+            System.out.println("problemNumber = " + problemNumber);
+        }
+    }
+
 }

@@ -3,6 +3,11 @@ package skku.skkujoon;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import skku.skkujoon.domain.Problem;
 import skku.skkujoon.domain.User;
 
-import java.time.LocalDateTime;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,6 +107,37 @@ public class DataLoader {
         log.info("problemList.size() = {}", problemList.size());
 
         return problemList;
+    }
+
+    public int getUserProblemCount(String handle) {
+        ResponseEntity<ResponseData<Problem>> responseEntity = restTemplate.exchange(
+                BASE_URL + "search/problem?query=solved_by:" + handle,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<ResponseData<Problem>>() {
+                }
+        );
+
+        ResponseData<Problem> body = responseEntity.getBody();
+        return body.getCount();
+    }
+
+    public List<Long> getUserSolvedProblemNumbers(String handle) {
+        List<Long> solvedProblemNumbers = new ArrayList<>();
+        int totalCount = getUserProblemCount(handle);
+        for (int i = 1; i <= Math.ceil(1.0 * totalCount / 100); i++) {
+            Connection connection = Jsoup.connect("https://www.acmicpc.net/problemset?user=" + handle + "&user_solved=1&page=" + i);
+            try {
+                Document document = connection.get();
+                Elements tbody = document.select("td.list_problem_id");
+                for (Element element : tbody) {
+                    solvedProblemNumbers.add(Long.parseLong(element.text()));
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
+        }
+        return solvedProblemNumbers;
     }
 
     public List<Problem> getAllProblemList() {
