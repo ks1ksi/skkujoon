@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="css">
+  <!--    <link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
+</th:block>
+<th:block layout:fragment="script">
+  <!--    <script th:src="@{/js/page/home.js}"></script>-->
+</th:block>
+
+<!-- Content -->
+<div layout:fragment="content">
+  <div class="container px-3 py-3">
+    <table class="table table-hover table-striped table-success">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Level</th>
+        <th scope="col">Solved by SKKU</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="problem : ${problems}">
+        <th th:text="${problem.problemNumber}"></th>
+        <th th:text="${problem.titleKo}"></th>
+        <td>
+          <img th:src="@{/svg/{tier}.svg(tier=${problem.level})}" th:alt="${problem.level}" style="width: 20px"/>
+        </td>
+        <td th:text="${problem.solvedBySkku}"></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <ul class="pagination justify-content-center">
+      <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
+        <a class="page-link" th:href="@{/problems?page={pageNum}(pageNum=${page - 1})}">Previous</a>
+      </li>
+      <li th:each="pageNum : ${#numbers.sequence(0, totalPage - 1)}"
+          th:if="${pageNum >= page - 5 and pageNum <= page + 5}"
+          th:classappend="${pageNum == page} ? 'active'"
+          class="page-item">
+        <a class="page-link" th:text="${pageNum+1}" th:href="@{/problems?page={pageNum}(pageNum=${pageNum})}"></a>
+      </li>
+      <li class="page-item" th:classappend="${page == totalPage - 1} ? 'disabled'">
+        <a class="page-link" th:href="@{/problems?page={pageNum}(pageNum=${page + 1})}">Next</a>
+      </li>
+    </ul>
+
+  </div>
+</div>
+</html>

@@ -33,6 +33,14 @@ public class ProblemService {
         return problemRepository.findAll();
     }
 
+    public List<Problem> findProblems(int page, int limit) {
+        return problemRepository.findAll(page, limit);
+    }
+
+    public List<Problem> findByLevel(int page, int limit, int level) {
+        return problemRepository.findByLevel(page, limit, level);
+    }
+
     public List<Problem> findUnsolvedProblems() {
         return problemRepository.findSkkuUnsolvedProblems();
     }

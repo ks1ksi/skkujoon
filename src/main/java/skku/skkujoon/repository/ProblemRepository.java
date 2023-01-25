@@ -26,6 +26,21 @@ public class ProblemRepository {
         return entityManager.createQuery("select p from Problem p", Problem.class).getResultList();
     }
 
+    public List<Problem> findAll(int page, int limit) {
+        return entityManager.createQuery("select p from Problem p order by p.problemNumber asc", Problem.class)
+                .setFirstResult(page*limit)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    public List<Problem> findByLevel(int page, int limit, int level) {
+        return entityManager.createQuery("select p from Problem p where p.level = :level order by p.problemNumber asc", Problem.class)
+                .setParameter("level", level)
+                .setFirstResult(page*limit)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
     public Optional<Problem> findByProblemNumber(Long problemNumber) {
         List<Problem> resultList = entityManager.createQuery("select p from Problem p where p.problemNumber = :problemNumber", Problem.class)
                 .setParameter("problemNumber", problemNumber).getResultList();
