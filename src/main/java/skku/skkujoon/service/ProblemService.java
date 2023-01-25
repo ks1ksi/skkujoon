@@ -16,10 +16,6 @@ public class ProblemService {
 
     private final ProblemRepository problemRepository;
 
-    public boolean isDuplicate(Problem problem) {
-        return problemRepository.findByProblemNumber(problem.getProblemNumber()).isPresent();
-    }
-
     @Transactional
     public void addProblem(Problem problem) {
         problemRepository.save(problem);

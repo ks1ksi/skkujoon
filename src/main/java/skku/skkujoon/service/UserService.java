@@ -22,10 +22,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final ProblemRepository problemRepository;
 
-    public boolean isDuplicate(String handle) {
-        return userRepository.findByHandle(handle).isPresent();
-    }
-
     @Transactional
     public void addUser(User user) {
         userRepository.save(user);
