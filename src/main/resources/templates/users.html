@@ -39,6 +39,9 @@
 
       <ul class="pagination justify-content-center">
         <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
+          <a class="page-link" th:href="@{/users?page=0}">First</a>
+        </li>
+        <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
           <a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${page - 1})}">Previous</a>
         </li>
         <li th:each="pageNum : ${#numbers.sequence(0, totalPage - 1)}"
@@ -49,6 +52,9 @@
         </li>
         <li class="page-item" th:classappend="${page == totalPage - 1} ? 'disabled'">
           <a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${page + 1})}">Next</a>
+        </li>
+        <li class="page-item" th:classappend="${page == totalPage - 1} ? 'disabled'">
+          <a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${totalPage - 1})}">Last</a>
         </li>
       </ul>
 
