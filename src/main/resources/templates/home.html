@@ -8,7 +8,7 @@
     <!--    <link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
 </th:block>
 <th:block layout:fragment="script">
-    <!--    <script th:src="@{/js/page/home.js}"></script>-->
+        <script th:type="module" th:src="@{/js/home.js}"></script>
 </th:block>
 
 <!-- Content -->
@@ -22,7 +22,8 @@
             </div>
             <div class="col-sm">
                 <div class="list-group">
-                    <a href="/problems" class="list-group-item list-group-item-action list-group-item-success" aria-current="true">
+                    <a href="/problems" class="list-group-item list-group-item-action list-group-item-success" aria-current="true"
+                       data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="아직 푼 유생이 없는 문제">
                         추천 문제
                     </a>
                     <div th:each="problem : ${randomProblems}">
