@@ -16,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 import skku.skkujoon.domain.Problem;
 import skku.skkujoon.domain.User;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,13 +117,18 @@ public class DataLoader {
                 }
         );
 
+        try {
+            Thread.sleep(DELAY);
+        } catch (InterruptedException e) {
+            log.error(e.getMessage());
+        }
+
         ResponseData<Problem> body = responseEntity.getBody();
         return body.getCount();
     }
 
-    public List<Long> getUserSolvedProblemNumbers(String handle) {
+    public List<Long> getUserSolvedProblemNumbers(String handle, int totalCount) {
         List<Long> solvedProblemNumbers = new ArrayList<>();
-        int totalCount = getUserProblemCount(handle);
         for (int i = 1; i <= Math.ceil(1.0 * totalCount / 100); i++) {
             Connection connection = Jsoup.connect("https://www.acmicpc.net/problemset?user=" + handle + "&user_solved=1&page=" + i);
             try {

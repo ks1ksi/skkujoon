@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import skku.skkujoon.domain.Problem;
 import skku.skkujoon.domain.User;
+import skku.skkujoon.service.UserService;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ class DataLoaderTest {
 
     @Test
     void userSolvedProblemNumbersTest() {
-        List<Long> problemNumbers = dataLoader.getUserSolvedProblemNumbers("ksi990302");
+        List<Long> problemNumbers = dataLoader.getUserSolvedProblemNumbers("ksi990302", 650);
         for (Long problemNumber : problemNumbers) {
             System.out.println("problemNumber = " + problemNumber);
         }

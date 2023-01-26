@@ -65,13 +65,23 @@ public class Scheduler {
                 user = u;
             }
 
-            List<Problem> userProblemList = dataLoader.getUserProblemList(user.getHandle());
-            for (Problem p : userProblemList) {
-                Optional<Problem> optionalProblem = problemService.findByProblemNumber(p.getProblemNumber());
-                if (optionalProblem.isEmpty()) continue;
+            List<Long> problemNumbers = dataLoader.getUserSolvedProblemNumbers(user.getHandle(), user.getSolvedCount());
+            for (Long problemNumber : problemNumbers) {
+                Optional<Problem> optionalProblem = problemService.findByProblemNumber(problemNumber);
+                if (optionalProblem.isEmpty()) {
+                    continue;
+                }
                 Problem problem = optionalProblem.get();
                 userService.solveProblem(user.getId(), problem.getId());
             }
+
+//            List<Problem> userProblemList = dataLoader.getUserProblemList(user.getHandle());
+//            for (Problem p : userProblemList) {
+//                Optional<Problem> optionalProblem = problemService.findByProblemNumber(p.getProblemNumber());
+//                if (optionalProblem.isEmpty()) continue;
+//                Problem problem = optionalProblem.get();
+//                userService.solveProblem(user.getId(), problem.getId());
+//            }
 
         }
     }
