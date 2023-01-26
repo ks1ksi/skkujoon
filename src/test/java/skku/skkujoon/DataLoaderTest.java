@@ -28,7 +28,7 @@ class DataLoaderTest {
     void problemLoadTest() {
         List<Problem> problemList = dataLoader.getUserProblemList("ksi990302");
         for (Problem p : problemList) {
-            System.out.println(p.getProblemNumber() + " " + p.getTitleKo() + " " + p.getLevel());
+            System.out.println(p.getProblemNumber() + " " + p.getTitleKo() + " " + p.getLevel() + " " + p.isSolvable() + " " + p.isPartial());
         }
     }
 

@@ -29,8 +29,10 @@ public class Problem {
 
     private int solvedBySkku;
 
+    @JsonProperty(value = "isSolvable")
     private boolean solvable;
 
+    @JsonProperty(value = "isPartial")
     private boolean partial;
 
     @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
