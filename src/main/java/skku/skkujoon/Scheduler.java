@@ -8,11 +8,13 @@ import skku.skkujoon.domain.Problem;
 import skku.skkujoon.domain.User;
 import skku.skkujoon.domain.dto.UpdateProblemDto;
 import skku.skkujoon.domain.dto.UpdateUserDto;
+import skku.skkujoon.repository.ClearRepository;
 import skku.skkujoon.service.ProblemService;
 import skku.skkujoon.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -21,7 +23,25 @@ public class Scheduler {
 
     private final UserService userService;
     private final ProblemService problemService;
+
+    private final ClearRepository clearRepository;
     private final DataLoader dataLoader;
+
+    @Transactional
+    public void truncate() {
+        clearRepository.truncateUserProblem();
+        clearRepository.truncateUser();
+        clearRepository.truncateUserProblem();
+    }
+
+    public void insert() {
+        dataLoader.getAllProblemList().forEach(problemService::addProblem);
+        List<User> userList = dataLoader.getUserList().stream().map(userService::addUser).collect(Collectors.toList());
+        for (User u : userList) {
+            List<Problem> userSolvedProblems = problemService.findUserSolvedProblems(u.getId());
+            userSolvedProblems.forEach(p -> userService.solveProblem(u.getId(), p.getId()));
+        }
+    }
 
     @Transactional
     public void task() {
