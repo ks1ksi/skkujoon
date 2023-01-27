@@ -17,8 +17,8 @@ public class ProblemService {
     private final ProblemRepository problemRepository;
 
     @Transactional
-    public void addProblem(Problem problem) {
-        problemRepository.save(problem);
+    public Problem addProblem(Problem problem) {
+        return problemRepository.save(problem);
     }
 
     public Optional<Problem> findById(Long problemId) {

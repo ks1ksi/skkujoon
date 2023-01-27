@@ -14,8 +14,9 @@ public class ProblemRepository {
 
     private final EntityManager entityManager;
 
-    public void save(Problem problem) {
+    public Problem save(Problem problem) {
         entityManager.persist(problem);
+        return problem;
     }
 
     public Optional<Problem> findById(Long id) {

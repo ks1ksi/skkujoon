@@ -14,8 +14,9 @@ public class UserRepository {
 
     private final EntityManager entityManager;
 
-    public void save(User user) {
+    public User save(User user) {
         entityManager.persist(user);
+        return user;
     }
 
     public Optional<User> findById(Long id) {
