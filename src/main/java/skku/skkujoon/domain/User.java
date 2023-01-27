@@ -38,7 +38,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserProblem> userProblems = new ArrayList<>();
 
-    public void addUserProblem(UserProblem userProblem) {
+    public void solve(UserProblem userProblem) {
         this.userProblems.add(userProblem);
         userProblem.setUser(this);
     }

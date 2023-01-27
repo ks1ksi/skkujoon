@@ -38,12 +38,9 @@ public class Problem {
     @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
     private List<UserProblem> userProblems = new ArrayList<>();
 
-    public void addUserProblem(UserProblem userProblem) {
+    public void solve(UserProblem userProblem) {
         this.userProblems.add(userProblem);
         userProblem.setProblem(this);
-    }
-
-    public void solve() {
         this.solvedBySkku++;
     }
 

@@ -49,18 +49,20 @@ public class UserService {
 
     @Transactional
     public void solveProblem(Long userId, Long problemId) {
-        if (userRepository.existsUserProblem(userId, problemId)) {
-            log.info("{}는 {}를 이미 풀었습니다.", userId, problemId);
-            return;
-        }
-
-        UserProblem userProblem = new UserProblem();
         User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
         Problem problem = problemRepository.findById(problemId).orElseThrow(IllegalArgumentException::new);
+        UserProblem userProblem = new UserProblem();
+        user.solve(userProblem);
+        problem.solve(userProblem);
+    }
 
-        user.addUserProblem(userProblem);
-        problem.addUserProblem(userProblem);
-        problem.solve();
+    @Transactional
+    public void solveProblemByProblemNumber(Long userId, Long problemNumber) {
+        User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
+        Problem problem = problemRepository.findByProblemNumber(problemNumber).orElseThrow(IllegalArgumentException::new);
+        UserProblem userProblem = new UserProblem();
+        user.solve(userProblem);
+        problem.solve(userProblem);
     }
 
     public Long countUser() {
