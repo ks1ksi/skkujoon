@@ -70,6 +70,12 @@ public class ProblemRepository {
         return entityManager.createQuery("select count(*) from Problem p", Long.class).getSingleResult();
     }
 
+    public Long countUserSolvedProblems(Long userId) {
+        return entityManager.createQuery("select count(*) from Problem p join p.userProblems up where up.user.id = :userId", Long.class)
+                .setParameter("userId", userId)
+                .getSingleResult();
+    }
+
     public Long countSkkuSolvedProblems() {
         return entityManager.createQuery("select count(*) from Problem p where p.solvedBySkku >= 1", Long.class).getSingleResult();
     }
