@@ -38,8 +38,9 @@ public class Scheduler {
         dataLoader.getAllProblemList().forEach(problemService::addProblem);
         List<User> userList = dataLoader.getUserList().stream().map(userService::addUser).collect(Collectors.toList());
         for (User u : userList) {
-            List<Problem> userSolvedProblems = problemService.findUserSolvedProblems(u.getId());
-            userSolvedProblems.forEach(p -> userService.solveProblem(u.getId(), p.getId()));
+            dataLoader.getUserSolvedProblemNumbers(u.getHandle(), u.getSolvedCount()).forEach(
+                    problemNumber -> userService.solveProblemByProblemNumber(u.getId(), problemNumber)
+            );
         }
     }
 
