@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 class SchedulerTest {
 
     @Autowired Scheduler scheduler;
@@ -16,6 +16,13 @@ class SchedulerTest {
     @Rollback(value = false)
     void init() {
         scheduler.task();
+    }
+
+    @Test
+    @Rollback(value = false)
+    void truncateAndInsert() {
+        scheduler.truncate();
+        scheduler.insert();
     }
 
 }
