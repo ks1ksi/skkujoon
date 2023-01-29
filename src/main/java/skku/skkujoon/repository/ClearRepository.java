@@ -28,4 +28,22 @@ public class ClearRepository {
         entityManager.createNativeQuery("truncate table problem").executeUpdate();
         entityManager.createNativeQuery("set foreign_key_checks = 1").executeUpdate();
     }
+
+    public void deleteUserProblem() {
+        entityManager.createNativeQuery("set foreign_key_checks = 0").executeUpdate();
+        entityManager.createNativeQuery("delete from user_problem").executeUpdate();
+        entityManager.createNativeQuery("set foreign_key_checks = 1").executeUpdate();
+    }
+
+    public void deleteUser() {
+        entityManager.createNativeQuery("set foreign_key_checks = 0").executeUpdate();
+        entityManager.createNativeQuery("delete from user").executeUpdate();
+        entityManager.createNativeQuery("set foreign_key_checks = 1").executeUpdate();
+    }
+
+    public void deleteProblem() {
+        entityManager.createNativeQuery("set foreign_key_checks = 0").executeUpdate();
+        entityManager.createNativeQuery("delete from problem").executeUpdate();
+        entityManager.createNativeQuery("set foreign_key_checks = 1").executeUpdate();
+    }
 }
