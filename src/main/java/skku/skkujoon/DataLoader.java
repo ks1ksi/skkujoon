@@ -12,6 +12,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import skku.skkujoon.domain.Problem;
 import skku.skkujoon.domain.User;
@@ -24,42 +25,27 @@ import java.util.List;
 @Slf4j
 public class DataLoader {
 
-    private final RestTemplate restTemplate;
-
     private static final String BASE_URL = "https://solved.ac/api/v3/";
     private static final double PAGE_SIZE = 50;
     private static final int GROUP_ID = 310;
     private static final int DELAY = 3600; // 15분마다 최대 256회 호출 가능
+    private static final int MAX_RETRIES = 5;
+    private final RestTemplate restTemplate;
 
     public List<User> getUserList() {
-        List<User> userList = new ArrayList<>();
-        ResponseEntity<ResponseData<User>> responseEntity = restTemplate.exchange(
-                BASE_URL + "ranking/in_organization?organizationId=" + GROUP_ID,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<ResponseData<User>>() {
-                }
-        );
-
+        ResponseEntity<ResponseData<User>> responseEntity = getResponseData(BASE_URL + "ranking/in_organization?organizationId=" + GROUP_ID, new ParameterizedTypeReference<ResponseData<User>>() {
+        });
         ResponseData<User> body = responseEntity.getBody();
+
         int totalUser = body.getCount();
-        userList.addAll(body.getItems());
+        List<User> userList = new ArrayList<>(body.getItems());
 
         for (int i = 1; i < Math.ceil(totalUser / PAGE_SIZE); i++) {
 
-            try {
-                Thread.sleep(DELAY);
-            } catch (InterruptedException e) {
-                log.error(e.getMessage());
-            }
+            sleep(DELAY);
 
-            ResponseEntity<ResponseData<User>> response = restTemplate.exchange(
-                    BASE_URL + "ranking/in_organization?organizationId=" + GROUP_ID + "&page=" + (i + 1),
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<ResponseData<User>>() {
-                    }
-            );
+            ResponseEntity<ResponseData<User>> response = getResponseData(BASE_URL + "ranking/in_organization?organizationId=" + GROUP_ID + "&page=" + (i + 1), new ParameterizedTypeReference<ResponseData<User>>() {
+            });
             userList.addAll(response.getBody().getItems());
         }
 
@@ -70,61 +56,35 @@ public class DataLoader {
     }
 
     public List<Problem> getUserProblemList(String handle) {
-        List<Problem> problemList = new ArrayList<>();
-
-        ResponseEntity<ResponseData<Problem>> responseEntity = restTemplate.exchange(
-                BASE_URL + "search/problem?query=solved_by:" + handle,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<ResponseData<Problem>>() {
-                }
-        );
-
+        ResponseEntity<ResponseData<Problem>> responseEntity = getResponseData(BASE_URL + "search/problem?query=solved_by:" + handle, new ParameterizedTypeReference<ResponseData<Problem>>() {
+        });
         ResponseData<Problem> body = responseEntity.getBody();
+        log.info("page {} loaded", 1);
+
         int totalProblem = body.getCount();
-        problemList.addAll(body.getItems());
+        List<Problem> problemList = new ArrayList<>(body.getItems());
 
         for (int i = 1; i < Math.ceil(totalProblem / PAGE_SIZE); i++) {
-
-            try {
-                Thread.sleep(DELAY);
-            } catch (InterruptedException e) {
-                log.error(e.getMessage());
+            sleep(DELAY);
+            for (int cnt = 0; cnt < MAX_RETRIES; cnt++) {
+                try {
+                    ResponseEntity<ResponseData<Problem>> response = getResponseData(BASE_URL + "search/problem?query=solved_by:" + handle + "&page=" + (i + 1), new ParameterizedTypeReference<ResponseData<Problem>>() {
+                    });
+                    problemList.addAll(response.getBody().getItems());
+                    log.info("page {} loaded", i + 1);
+                    break;
+                } catch (HttpServerErrorException httpServerErrorException) {
+                    log.error("page {} load error: {}", i + 1, httpServerErrorException.getMessage());
+                    sleep(DELAY);
+                    if (cnt == MAX_RETRIES - 1) throw httpServerErrorException;
+                }
             }
-
-            ResponseEntity<ResponseData<Problem>> response = restTemplate.exchange(
-                    BASE_URL + "search/problem?query=solved_by:" + handle + "&page=" + (i + 1),
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<ResponseData<Problem>>() {
-                    }
-            );
-            problemList.addAll(response.getBody().getItems());
         }
 
         log.info("totalProblem = {}", totalProblem);
         log.info("problemList.size() = {}", problemList.size());
 
         return problemList;
-    }
-
-    public int getUserProblemCount(String handle) {
-        ResponseEntity<ResponseData<Problem>> responseEntity = restTemplate.exchange(
-                BASE_URL + "search/problem?query=solved_by:" + handle,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<ResponseData<Problem>>() {
-                }
-        );
-
-        try {
-            Thread.sleep(DELAY);
-        } catch (InterruptedException e) {
-            log.error(e.getMessage());
-        }
-
-        ResponseData<Problem> body = responseEntity.getBody();
-        return body.getCount();
     }
 
     public List<Long> getUserSolvedProblemNumbers(String handle, int totalCount) {
@@ -145,36 +105,29 @@ public class DataLoader {
     }
 
     public List<Problem> getAllProblemList() {
-        List<Problem> problemList = new ArrayList<>();
-
-        ResponseEntity<ResponseData<Problem>> responseEntity = restTemplate.exchange(
-                BASE_URL + "search/problem?query=",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<ResponseData<Problem>>() {
-                }
-        );
-
+        ResponseEntity<ResponseData<Problem>> responseEntity = getResponseData(BASE_URL + "search/problem?query=", new ParameterizedTypeReference<ResponseData<Problem>>() {
+        });
         ResponseData<Problem> body = responseEntity.getBody();
+        log.info("page {} loaded", 1);
+
         int totalProblem = body.getCount();
-        problemList.addAll(body.getItems());
+        List<Problem> problemList = new ArrayList<>(body.getItems());
 
         for (int i = 1; i < Math.ceil(totalProblem / PAGE_SIZE); i++) {
-
-            try {
-                Thread.sleep(DELAY);
-            } catch (InterruptedException e) {
-                log.error(e.getMessage());
+            sleep(DELAY);
+            for (int cnt = 0; cnt < MAX_RETRIES; cnt++) {
+                try {
+                    ResponseEntity<ResponseData<Problem>> response = getResponseData(BASE_URL + "search/problem?query=&page=" + (i + 1), new ParameterizedTypeReference<ResponseData<Problem>>() {
+                    });
+                    problemList.addAll(response.getBody().getItems());
+                    log.info("page {} loaded", i + 1);
+                    break;
+                } catch (HttpServerErrorException httpServerErrorException) {
+                    log.error("page {} load error: {}", i + 1, httpServerErrorException.getMessage());
+                    sleep(DELAY);
+                    if (cnt == MAX_RETRIES - 1) throw httpServerErrorException;
+                }
             }
-
-            ResponseEntity<ResponseData<Problem>> response = restTemplate.exchange(
-                    BASE_URL + "search/problem?query=&page=" + (i + 1),
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<ResponseData<Problem>>() {
-                    }
-            );
-            problemList.addAll(response.getBody().getItems());
         }
 
         log.info("totalProblem = {}", totalProblem);
@@ -184,15 +137,21 @@ public class DataLoader {
     }
 
     public int getProblemCount() {
-        ResponseEntity<ResponseData<Problem>> responseEntity = restTemplate.exchange(
-                BASE_URL + "search/problem?query=",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<ResponseData<Problem>>() {
-                }
-        );
-
+        ResponseEntity<ResponseData<Problem>> responseEntity = getResponseData(BASE_URL + "search/problem?query=", new ParameterizedTypeReference<ResponseData<Problem>>() {
+        });
         return responseEntity.getBody().getCount();
+    }
+
+    public <T> ResponseEntity<ResponseData<T>> getResponseData(String url, ParameterizedTypeReference<ResponseData<T>> parameterizedTypeReference) {
+        return restTemplate.exchange(url, HttpMethod.GET, null, parameterizedTypeReference);
+    }
+
+    public void sleep(int delay) {
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            log.error(e.getMessage());
+        }
     }
 
     @Getter
