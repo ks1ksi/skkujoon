@@ -9,6 +9,7 @@ import skku.skkujoon.domain.User;
 import skku.skkujoon.domain.dto.UpdateProblemDto;
 import skku.skkujoon.domain.dto.UpdateUserDto;
 import skku.skkujoon.repository.ClearRepository;
+import skku.skkujoon.repository.JdbcRepository;
 import skku.skkujoon.service.ProblemService;
 import skku.skkujoon.service.UserService;
 
@@ -25,6 +26,7 @@ public class Scheduler {
     private final ProblemService problemService;
 
     private final ClearRepository clearRepository;
+    private final JdbcRepository jdbcRepository;
     private final DataLoader dataLoader;
 
     @Transactional
@@ -34,6 +36,12 @@ public class Scheduler {
         clearRepository.truncateUserProblem();
     }
 
+    public void delete() {
+        clearRepository.deleteUserProblem();
+        clearRepository.deleteUser();
+        clearRepository.deleteProblem();
+    }
+
     public void insert() {
         dataLoader.getAllProblemList().forEach(problemService::addProblem);
         List<User> userList = dataLoader.getUserList().stream().map(userService::addUser).collect(Collectors.toList());
@@ -41,6 +49,17 @@ public class Scheduler {
             dataLoader.getUserSolvedProblemNumbers(u.getHandle(), u.getSolvedCount()).forEach(
                     problemNumber -> userService.solveProblemByProblemNumber(u.getId(), problemNumber)
             );
+        }
+    }
+
+    public void bulkInsert() {
+        jdbcRepository.insertUsers(dataLoader.getUserList());
+        jdbcRepository.insertProblems(dataLoader.getAllProblemList());
+        List<User> userList = userService.findAll();
+        for (User u : userList) {
+            List<Problem> problemList = dataLoader.getUserSolvedProblemNumbers(u.getHandle(), u.getSolvedCount())
+                    .stream().map(pn -> problemService.findByProblemNumber(pn).orElseThrow(IllegalArgumentException::new)).collect(Collectors.toList());
+            jdbcRepository.insertUserProblems(u, problemList);
         }
     }
 

@@ -25,4 +25,11 @@ class SchedulerTest {
         scheduler.insert();
     }
 
+    @Test
+    @Rollback(value = false)
+    void deleteAndBulkInsert() {
+        scheduler.delete();
+        scheduler.bulkInsert();
+    }
+
 }
