@@ -62,4 +62,14 @@ public class JdbcRepository {
                 });
     }
 
+    public void updateProblems(List<Problem> problems) {
+        String sql = "update problem set solved_by_skku = solved_by_skku + 1 where problem_id = ?";
+        jdbcTemplate.batchUpdate(sql,
+                problems,
+                problems.size(),
+                (ps, p) -> {
+                    ps.setLong(1, p.getId());
+                });
+    }
+
 }

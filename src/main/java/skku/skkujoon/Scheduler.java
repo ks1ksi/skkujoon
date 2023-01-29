@@ -60,6 +60,7 @@ public class Scheduler {
             List<Problem> problemList = dataLoader.getUserSolvedProblemNumbers(u.getHandle(), u.getSolvedCount())
                     .stream().map(pn -> problemService.findByProblemNumber(pn).orElseThrow(IllegalArgumentException::new)).collect(Collectors.toList());
             jdbcRepository.insertUserProblems(u, problemList);
+            jdbcRepository.updateProblems(problemList);
         }
     }
 

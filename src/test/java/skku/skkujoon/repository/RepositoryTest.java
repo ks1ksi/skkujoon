@@ -68,6 +68,16 @@ public class RepositoryTest {
     }
 
     @Test
+    @Rollback(value = false)
+    void updateProblemTest() {
+        List<User> users = userRepository.findAll();
+        for (User u : users) {
+            List<Problem> problems = problemRepository.findUserSolvedProblems(u.getId());
+            jdbcRepository.updateProblems(problems);
+        }
+    }
+
+    @Test
     void returnUserTest() {
         User user = new User();
         user.setHandle("new user");
